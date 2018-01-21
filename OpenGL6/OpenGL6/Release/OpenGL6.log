@@ -1,0 +1,5 @@
+﻿  Main.cpp
+Main.cpp(105): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+  Generating code
+  Finished generating code
+  OpenGL6.vcxproj -> C:\Users\User\documents\visual studio 2012\Projects\OpenGL6\Release\OpenGL6.exe
