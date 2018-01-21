@@ -18,7 +18,7 @@ GLubyte*textureImage;
 float rotateX = 0;
 float rotateY = 0;
 int mouseX, mouseY;
-int num_texture=-1;
+int num_texture = -1;
  
 bool loadPngImage(char*name, int&outWidth, int&outHeight, bool&outHasAlpha, GLubyte**outData)
 {
@@ -104,64 +104,65 @@ bool loadPngImage(char*name, int&outWidth, int&outHeight, bool&outHasAlpha, GLub
 	fclose(fp);
 	return(num_texture);
 }
-int asdf[5];
+int texture_num[5];
 void init()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClearDepth(1.0f);
+
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.1);
+
 	glEnable(GL_DEPTH_TEST);
 	//The following two lines enable semi transparent
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	int width, height;
-	int width1, height1;
-	bool hasAlpha, hasAlpha1;
+	bool hasAlpha;
 	char filename[] = "texture.png";
 	char filename1[] = "texture1.png";
 	
-	asdf[0] = loadPngImage(filename, width, height, hasAlpha, &textureImage);
-	asdf[1] = loadPngImage(filename1, width1, height1, hasAlpha1, &textureImage);
-	printf("TEST: %d - %d\n", asdf[0], asdf[1]);
+	texture_num[0] = loadPngImage(filename, width, height, hasAlpha, &textureImage);
+	texture_num[1] = loadPngImage(filename1, width, height, hasAlpha, &textureImage);
+	printf("TEST: %d - %d\n", texture_num[0], texture_num[1]);
 
-	//glShadeModel(GL_FLAT);
+	glShadeModel(GL_FLAT);
 	glEnable(GL_TEXTURE_2D);
 }
 void display()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 	glTranslatef(0.0f, 0.0f, -4.0f);
 	
 	glRotatef(rotateX, 0,1,0);
 	glRotatef(rotateY, 1,0,0);
 
-	//glColor4f(1,1,1,1);
-	glBindTexture(GL_TEXTURE_2D, asdf[0]);
+	glColor4f(1,1,1,1);
+	glBindTexture(GL_TEXTURE_2D, texture_num[0]);
 	glBegin(GL_QUADS);
 	glTexCoord2f(0.0, 0.0);
-	glVertex3f(-1.0, -1.0, 0.0);
-	glTexCoord2f(0.0, 1.0);
-	glVertex3f(-1.0, 1.0, 0.0);
-	glTexCoord2f(1.0, 1.0);
-	glVertex3f(1.0, 1.0, 0.0);
-	glTexCoord2f(1.0, 0.0);
-	glVertex3f(1.0, -1.0, 0.0);
+	glVertex3f(-1.0f, -1.0f, 0.1f);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(-1.0f, 1.0f, 0.1f);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(1.0f, 1.0f, 0.1f);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(1.0f, -1.0f, 0.1f);
 	glEnd();
 
-	//glColor4f(1,1,1,1);
-	glBindTexture(GL_TEXTURE_2D, asdf[1]);
+	glColor4f(1,1,1,1);
+	glBindTexture(GL_TEXTURE_2D, texture_num[1]);
 	glBegin(GL_QUADS);
-	glTexCoord2f(0.0, 0.0);
-	glVertex3f(-2.0, -2.0, 0.0);
-	glTexCoord2f(0.0, 1.0);
-	glVertex3f(-2.0, 2.0, 0.0);
-	glTexCoord2f(1.0, 1.0);
-	glVertex3f(2.0, 2.0, 0.0);
-	glTexCoord2f(1.0, 0.0);
-	glVertex3f(2.0, -2.0, 0.0);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(-2.0f, -2.0f, 0.0f);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(-2.0f, 2.0f, 0.0f);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(2.0f, 2.0f, 0.0f);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(2.0f, -2.0f, 0.0f);
 	glEnd();
-
-
 
 	glutSwapBuffers();
 }
@@ -197,7 +198,6 @@ int main(int argc, char**argv)
 	glutDisplayFunc(display);
 	glutMotionFunc(mouseMotion);
 	glutPassiveMotionFunc(mousePassive);
-	std::cout << "Use mouse drag to rotate." << std::endl;
 	glutMainLoop();
 	return 0;
 }
